@@ -1,0 +1,102 @@
+# создание юзеров
+user1 = User.objects.create_name(username="Ivan")
+user2 = User.objects.create_name(username="Lena")
+user3 = User.objects.create_name(username="Igor")
+user4 = User.objects.create_name(username="Sergey")
+
+# вызов юзера из БД
+user1 = User.objects.get(id=1)          #User: Ivan
+user2 = User.objects.get(id=2)          #User: Lena
+user3 = User.objects.get(id=3)          #User: Igor
+user4 = User.objects.get(id=4)          #User: Sergey
+
+# создание объектов модели Author
+Author.objects.create(author_name=user1)
+Author.objects.create(author_name=user3)
+Author.objects.create(author_name=user4)
+
+# просмотр юзеров-авторов в консоли
+Author.objects.get(id=1).author_name        #User: Sergey
+Author.objects.get(id=2).author_name        #User: Lena
+Author.objects.get(id=3).author_name        #User: Igor
+Author.objects.get(id=4).author_name        #User: Ivan
+
+# создание 4 объектов модели Category
+Category.objects.create(theme="Books")
+Category.objects.create(theme="Cars")
+Category.objects.create(theme="Women")
+Category.objects.create(theme="Animals")
+
+#вызоа категории в консоли
+Category.objects.get(id=1).theme            #'Books'
+Category.objects.get(id=2).theme            #'Cars'
+Category.objects.get(id=3).theme            #'Women'
+Category.objects.get(id=4).theme            #'Animals'
+# Создание 3 объектов модели Post
+
+Post.objects.create(name=user1, category="NE", name_of_article_or_news="bla-bla-bal", text_of_article_or_news="blu-blu-blu")
+Post.objects.create(name=user3, category="AR", name_of_article_or_news="glu-gla-gli", text_of_article_or_news="flop-flop-flop")
+Post.objects.create(name=user4, category="AR", name_of_article_or_news="abra", text_of_article_or_news="abra-cada-bra")
+# добавление категории
+
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2))
+Post.objects.get(id=1).postCategory.add(Category.objects.get(id=3))
+Post.objects.get(id=2).postCategory.add(Category.objects.get(id=4))
+
+# создание комментария
+Comment.objects.create(comment_under_art_or_news=Post.objects.get(id=1),commentUser=Author.objects.get(id=1).author_name,commentText="Some text")
+Comment.objects.create(comment_under_art_or_news=Post.objects.get(id=2),commentUser=Author.objects.get(id=2).author_name,commentText="Some another text")
+Comment.objects.create(comment_under_art_or_news=Post.objects.get(id=3),commentUser=Author.objects.get(id=4).author_name,commentText="Another text ")
+
+# применение методов like()/dislike() к комментариям и постам
+Comment.objects.get(id=9).like()
+Comment.objects.get(id=10).dislike()
+Comment.objects.get(id=11).dislike()
+Comment.objects.get(id=10).like()
+Comment.objects.get(id=9).dislike()
+Comment.objects.get(id=11).like()
+Post.objects.get(id=5).like()
+Post.objects.get(id=6).like()
+Post.objects.get(id=7).like()
+Post.objects.get(id=5).dislike()
+
+# просмотр рейтингов
+Comment.objects.get(id=3).commentRating             # -1
+
+# обновление рейтинга
+a = Author.objects.get(author_name=4)
+a.update_rating()
+a.rating
+c = Author.objects.get(id=1)
+c.update_rating()
+c.rating
+b = Author.objects.get(id=2)
+b.update_rating()
+b.rating
+
+#рейтинг лучшего пользователя
+a = Author.objects.order_by("-rating")[:] #список всех авторов по убыванию рейтинга
+a[0].author_name # вывод лучшего автора
+a[0].rating # рейтинг лучшего автора
+
+# Вывести всех полей модели Post
+Post.objects.values()
+a = Post.objects.filter(category='AR').order_by('rating_of_article_or_news')[1:]
+
+# перебор нужных полей циклом for
+>>> for i in a:
+...     i.date_of_create
+...     i.rating_of_article_or_news
+...     i.name_of_article_or_news
+...     i.name.author_name.username
+...     i.preview()
+
+# вывод комментариев по дате, рейтингу, пользователю и тексту
+com = Comment.objects.filter(comment_under_art_or_news=i.id)
+>>> for j in com:
+...     j.commentDateTime
+...     j.commentRating
+...     j.commentUser
+...     j.commentText
+...
