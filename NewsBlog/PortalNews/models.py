@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
-from datetime import datetime
+from django.core.validators import MinValueValidator
 
 
 # create models
@@ -55,6 +55,9 @@ class Post(models.Model):
     text_of_article_or_news = models.TextField()
     rating_of_article_or_news = models.SmallIntegerField(default=0)
     postCategory = models.ManyToManyField(Category, through="PostCategory")
+
+    def __str__(self):
+        return f"{self.name_of_article_or_news}"
 
     def like(self):
         self.rating_of_article_or_news += 1

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Start Bootstrap Template - {% block title %} {% endblock title %}</title>
+    {% load static %}
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+</head>
+<body class="d-flex flex-column h-100">
+
+<main class="flex-shrink-0">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">PortalNews </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/posts/">Posts</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-5">
+
+        </div>
+    </header>
+    <!-- Features section-->
+    <section class="py-5" id="features">
+
+    </section>
+    <!-- Testimonial section-->
+    <!-- Blog preview section-->
+    <section class="py-5">
+        <header class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1600x900')">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+
+                        <h1><span style="color: #ffffff;">{% block content %}
+                            {% endblock content %}
+                        </span></h1>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
+</main>
+<!-- Footer-->
+
+</body>
+</html>

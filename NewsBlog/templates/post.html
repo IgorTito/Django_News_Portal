@@ -1,0 +1,38 @@
+<!--наследуемся от default.html-->
+{% extends 'flatpages/default.html' %}
+
+{% load my_filter %}
+<!--в заголовок идентификатор с таким же именем как и в представлениях -->
+{% block title %}
+Post
+{% endblock title %}
+
+<!-- хуярим  в контент идентификатор с таким же именем как и в представлениях -->
+{% block content %}
+<h1>{{ post }}</h1>
+
+<hr>
+{% if post %}
+<table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Автор публикации</td>
+        <td>Дата публикации</td>
+        <td>Текст статьи</td>
+        <td>Рейтинг статьи</td>
+    </tr>
+    <tr>
+        <td>{{ post.name_of_article_or_news|cenz }}</td>
+        <td>{{ post.name.author_name }}</td>
+        <td>{{ post.date_of_create|date:"d M Y" }}</td>
+        <td>{{ post.text_of_article_or_news|cenz }}</td>
+        <td>{{ post.rating_of_article_or_news }}</td>
+
+    </tr>
+
+
+</table>
+{% else %}
+<h2>!!!</h2>
+{% endif %}
+{% endblock content %}
