@@ -6,20 +6,29 @@
 {% block title %}
 Post
 {% endblock title %}
-
-<!-- хуярим  в контент идентификатор с таким же именем как и в представлениях -->
+<!-- заносим  в контент идентификатор с таким же именем как и в представлениях -->
 {% block content %}
-<h1>{{ post }}</h1>
-
+<h3>{{ post }}</h3>
 <hr>
 {% if post %}
-<table>
+<style type="text/css">
+   TABLE {
+    width: 100%; /* Ширина таблицы */
+    border: 1px solid #399; /* Граница вокруг таблицы */
+    border-spacing: 7px 5px; /* Расстояние между границ */
+   }
+   TD {
+    border: 2px solid DodgerBlue; /* Граница вокруг ячеек */
+    padding: 5px; /* Поля в ячейках */
+   }
+  </style>
+<table style="font:26px verdana">
     <tr>
-        <td>Заголовок</td>
-        <td>Автор публикации</td>
-        <td>Дата публикации</td>
-        <td>Текст статьи</td>
-        <td>Рейтинг статьи</td>
+        <td> Заголовок </td>
+        <td> Автор публикации</td>
+        <td> Дата публикации</td>
+        <td> Текст статьи </td>
+        <td> Рейтинг статьи </td>
     </tr>
     <tr>
         <td>{{ post.name_of_article_or_news|cenz }}</td>
@@ -27,11 +36,13 @@ Post
         <td>{{ post.date_of_create|date:"d M Y" }}</td>
         <td>{{ post.text_of_article_or_news|cenz }}</td>
         <td>{{ post.rating_of_article_or_news }}</td>
-
     </tr>
-
-
 </table>
+    {% if post.category == "NE" %}
+        <a href="news/{{post.id}}/update/" style="font-size:20px">Изменить</a> | <a href="news/{{post.id}}/delete/" style="font-size:20px">Удалить</a>
+    {% else %}
+        <a href="articles/{{post.id}}/update/" style="font-size:20px">Изменить</a> | <a href="articles/{{post.id}}/delete/" style="font-size:20px">Удалить</a>
+    {% endif %}
 {% else %}
 <h2>!!!</h2>
 {% endif %}

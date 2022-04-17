@@ -2,9 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.core.validators import MinValueValidator
-
+from django.urls import reverse
 
 # create models
+
+
+
 class Author(models.Model):
     author_name = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.SmallIntegerField(default=0)
@@ -24,6 +27,8 @@ class Author(models.Model):
 
         self.rating = (c_rat + p_rat) * 3
         self.save()
+    def __str__(self):
+        return f"{self.author_name}"
 
 
 # Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
@@ -42,22 +47,27 @@ class Category(models.Model):
 # текст статьи/новости;
 # рейтинг статьи/новости.
 class Post(models.Model):
-    name = models.ForeignKey(Author, on_delete=models.CASCADE)
+    name = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Имя автора")
     ARTICLE = "AR"
     NEWS = "NE"
     CATEGORY = (
         (ARTICLE, "Статья"),
         (NEWS, "Новость")
     )
-    category = models.CharField(max_length=2, choices=CATEGORY, default=NEWS)
-    date_of_create = models.DateTimeField(auto_now_add=True)
-    name_of_article_or_news = models.CharField(max_length=128)
-    text_of_article_or_news = models.TextField()
-    rating_of_article_or_news = models.SmallIntegerField(default=0)
+    category = models.CharField(max_length=2, choices=CATEGORY, default=NEWS, verbose_name="Категория")
+    date_of_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    name_of_article_or_news = models.CharField(max_length=128, verbose_name="Заголовок")
+    text_of_article_or_news = models.TextField(verbose_name="Текст")
+    rating_of_article_or_news = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
     postCategory = models.ManyToManyField(Category, through="PostCategory")
 
     def __str__(self):
         return f"{self.name_of_article_or_news}"
+    def get_absolute_url(self):
+        return reverse('one_post', args=[str(self.id)])
+    class Meta():
+        verbose_name = "Пост"
+        verbose_name_plural = "Посты"
 
     def like(self):
         self.rating_of_article_or_news += 1
@@ -69,6 +79,7 @@ class Post(models.Model):
 
     def preview(self):
         return f"{(self.text_of_article_or_news)[0:20]}{'...'}"
+
 
 
 # Промежуточная модель для связи «многие ко многим»:

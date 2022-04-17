@@ -8,41 +8,73 @@ Posts
 {% endblock title %}
 
 {% block content %}
-<h1><span style="color: #ffffff;">Статьи</span></h1>
-<h3>{{ time_now|date:'M d Y' }}</h3>
-<h4><span style="color: #ffffff;">Общее количество статей: </span>{{ posts|length }}</h4>
-<!-- Если в переменной next_sale будет None,
-то выведется указанный в фильтре текст -->
-<!--<h3> {{ next_sale|default_if_none:"Сообщим позже о новых статьях!" }} </h3>-->
+    <h1><span style="color: #ffffff;">Все посты</span></h1>
+    <hr>
+    <h4><span style="color: #ffffff;">Количество постов на странице: </span>{{ posts|length }}</h4>
+    <a href="news/create/" style="font-size:20px">Создать новость</a>
+    <hr>
+    <a href="articles/create/" style="font-size:20px">Создать статью</a>
+    <h2>{{ time_now|date:'M d Y' }}</h2>
+    <hr>
+    {% if posts %}
+    <style type="text/css">
+   TABLE {
+    width: 100%; /* Ширина таблицы */
+    border: 1px solid #399; /* Граница вокруг таблицы */
+    border-spacing: 7px 5px; /* Расстояние между границ */
+   }
+   TD {
 
-<hr>
-{% if posts %}
-<table>
-    <tr>
-        <td>Заголовок</td>
-        <td>Автор публикации</td>
-        <td>Дата публикации</td>
-        <td>Текст статьи
-        <td>Рейтинг статьи</td>
+    border: 2px solid DodgerBlue; /* Граница вокруг ячеек */
+    padding: 5px; /* Поля в ячейках */
+   }
+    </style>
+    <table style="font:26px verdana">
+        <tr>
+            <td>Заголовок</td>
+            <td>Автор публикации</td>
+            <td>Дата публикации</td>
+            <td>Текст статьи
+            <td>Рейтинг статьи</td>
+            <td>Категория</td>
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.name_of_article_or_news|truncatewords:4|cenz }}</td>
+            <td>{{ post.name.author_name }}</td>
+            <td>{{ post.date_of_create|date:"d M Y" }}</td>
+            <td>{{ post.text_of_article_or_news|truncatechars:20 }}<a href="{{post.id}}" style="font-size:20px">читать полностью</a></td>
+            <td>{{ post.rating_of_article_or_news }}</td>
+            <td>{{ post.category }}</td>
+        </tr>
+        {% endfor %}
 
 
-    </tr>
+    </table>
+    {% else %}
+    <h2>!!!</h2>
+    {% endif %}
+<!-- Пагинация -->
+   {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            <<<
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+   {% endif %}
 
-    {% for post in posts %}
-    <tr>
-        <td>{{ post.name_of_article_or_news|truncatewords:4|cenz }}</td>
-        <td>{{ post.name.author_name }}</td>
-        <td>{{ post.date_of_create|date:"d M Y" }}</td>
-        <td>{{ post.text_of_article_or_news|truncatechars:20 }}</td>
-        <td>{{ post.rating_of_article_or_news }}</td>
+    <!-- Текущая страница -->
+   {{ page_obj.number }}
+    <!-- Следующая страница-->
 
-    </tr>
-    {% endfor %}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           >>>
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
 
-</table>
-{% else %}
-<h2>!!!</h2>
-{% endif %}
 {% endblock content %}
 
 

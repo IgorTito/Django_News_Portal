@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Редактирование поста</h1>
+<h2>Можете внести изменения, только если пост был создан как новость</h2>
+<h2>Категория "{{ post.category }}"</h2>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+
+    <input type="submit" value="Сохранить" />
+</form>
+{% endblock content %}

@@ -1,0 +1,63 @@
+{% extends 'flatpages/default.html' %}
+{% load my_filter %}
+{% block content %}
+<h1>Поиск поста</h1>
+<hr>
+<form action="" method="get">
+       {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+       {{ find.form.as_p }}
+       {# Добавим кнопку отправки данных формы #}
+       <input type="submit" value="Найти"/>
+</form>
+<h3>{{ time_now|date:'M d Y' }}</h3>
+    <h4><span style="color: #ffffff;">Количество статей на странице: </span>{{ find.qs|length }}</h4>
+
+    <hr>
+    {% if find.qs %}
+    <table>
+        <tr>
+            <td>Заголовок</td>
+            <td>Автор публикации</td>
+            <td>Дата публикации</td>
+            <td>Текст статьи
+            <td>Рейтинг статьи</td>
+            <td>Категория</td>
+        </tr>
+        {% for x in find.qs %}
+        <tr>
+            <td>{{ x.name_of_article_or_news|truncatewords:4|cenz }}</td>
+            <td>{{ x.name.author_name }}</td>
+            <td>{{ x.date_of_create|date:"d M Y" }}</td>
+            <td>{{ x.text_of_article_or_news|truncatechars:20 }}</td>
+            <td>{{ x.rating_of_article_or_news }}</td>
+            <td>{{ x.category }}</td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <h>Ничего не найдено по данным критериям</h>
+    {% endif %}
+    </table>
+
+
+<!-- Пагинация-->
+   {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            <<<
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+   {% endif %}
+
+    <!-- Текущая страница -->
+   {{ page_obj.number }}
+    <!-- Следующая страница-->
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           >>>
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
