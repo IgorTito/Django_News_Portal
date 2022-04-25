@@ -1,10 +1,11 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django import forms
 
-# create models
 
 
 
@@ -12,10 +13,6 @@ class Author(models.Model):
     author_name = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.SmallIntegerField(default=0)
 
-    # Метод update_rating() модели Author, который обновляет рейтинг пользователя, переданный в аргумент этого
-    # метода. Он состоит из    следующего:    суммарный    рейтинг    каждой    статьи    автора    умножается
-    # на    3;    суммарный    рейтинг    всех    комментариев    автора;    суммарный    рейтинг    всех    комментариев
-    # к    статьям    автора.
     def update_rating(self):
         updateRatingPost = self.post_set.aggregate(rating_P=Sum("rating_of_article_or_news"))
         p_rat = 0
@@ -111,3 +108,5 @@ class Comment(models.Model):
     def dislike(self):
         self.commentRating -= 1
         self.save()
+
+

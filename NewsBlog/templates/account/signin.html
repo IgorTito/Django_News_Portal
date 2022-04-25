@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+
+<h2>Вы вошли как  {{request.user.username}}</h2>
+<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+    {% if not_be_an_author %}
+        <button> <a href="/posts/upgrade"> Стать автором!</a> </button>
+    {% endif %}
+<button> <a href="/posts/logout">Выйти</a> </button>
+<button> <a href="/posts/">На главную</a> </button>
+{% endblock %}

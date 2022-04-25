@@ -8,9 +8,19 @@ Posts
 {% endblock title %}
 
 {% block content %}
-    <h1><span style="color: #ffffff;">Все посты</span></h1>
+
+    {% if request.user.username %}
+    <h2>Добро пожаловать,  {{request.user.username}}</h2>
+
+    <button> <a href="/posts/logout">Выйти</a> </button>
+    {% else %}
+    <button> <a href="/sign/signup"> Зарегистрироваться </a></button></li>
+    <button> <a href="/posts/login"> Войти </a></button></li>
+    {% endif %}
+<!--    <h1><span style="color: #ffffff;">Все посты</span></h1>-->
     <hr>
     <h4><span style="color: #ffffff;">Количество постов на странице: </span>{{ posts|length }}</h4>
+    <hr>
     <a href="news/create/" style="font-size:20px">Создать новость</a>
     <hr>
     <a href="articles/create/" style="font-size:20px">Создать статью</a>
@@ -75,6 +85,10 @@ Posts
        {% endif %}
    {% endif %}
 
+
 {% endblock content %}
+
+
+
 
 
