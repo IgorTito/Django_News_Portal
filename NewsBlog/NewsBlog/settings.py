@@ -142,8 +142,8 @@ ACCOUNT_FORMS = {'signup': 'PortalNews.forms.BasicSignupForm'}
 
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера почты
 EMAIL_PORT = 465  # порт smtp сервера/ везде одинаковый
-EMAIL_HOST_USER = 'hayabusaigor@yandex.ru'  # имя пользователя, это всё то что идёт до собачки @ (для яндекс-аккаунта)
-EMAIL_HOST_PASSWORD = 'Bujhmnbnfhtyrj15'  # пароль от почты
+EMAIL_HOST_USER = ''  # имя пользователя, это всё то что идёт до собачки @ (для яндекс-аккаунта)
+EMAIL_HOST_PASSWORD = ''  # пароль от почты
 EMAIL_USE_SSL = True  # защита от перехвата
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
