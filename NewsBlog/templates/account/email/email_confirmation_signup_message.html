@@ -1,0 +1,24 @@
+
+<!--наследуемся от default.html-->
+{% extends 'flatpages/default.html' %}
+<!--в заголовок идентификатор с таким же именем как и в представлениях -->
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% load account %} <!--    ссылка на подтверждение-->
+    <h1>Привет, {{ user.username }}!</h1>
+
+    <h3>Пожалуйста, нажмите на <a href="{{ activate_url }}">ссылку</a>,чтобы подтвердить свою регистрацию </h3>
+     <!-- Вставляем ссылку на активацию -->
+</body>
+</html>
+
+{% endblock content %}

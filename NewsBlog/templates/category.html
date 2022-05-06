@@ -1,0 +1,36 @@
+<!--наследуемся от default.html-->
+{% extends 'flatpages/default.html' %}
+<!--в заголовок идентификатор с таким же именем как и в представлениях -->
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table style="font:26px verdana">
+        {% for x in category %}
+            <tr>
+                <td>
+                    {{ x.theme }}
+
+                    <button><a href="{% url 'subscribe' x.id %}"><u>Оформить подписку!</u></a></button>
+
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
+{% endblock content %}
+
+
+

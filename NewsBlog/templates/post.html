@@ -29,6 +29,7 @@ Post
         <td> Дата публикации</td>
         <td> Текст статьи </td>
         <td> Рейтинг статьи </td>
+        <td> Категория </td>
     </tr>
     <tr>
         <td>{{ post.name_of_article_or_news|cenz }}</td>
@@ -36,6 +37,7 @@ Post
         <td>{{ post.date_of_create|date:"d M Y" }}</td>
         <td>{{ post.text_of_article_or_news|cenz }}</td>
         <td>{{ post.rating_of_article_or_news }}</td>
+        <td>{% for category in post.postCategory.all %} {{ category }} {% endfor %}</td>
     </tr>
 </table>
     {% if post.category == "NE" %}

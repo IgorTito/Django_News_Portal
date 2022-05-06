@@ -11,9 +11,21 @@
 </form>
 <h3>{{ time_now|date:'M d Y' }}</h3>
     <h4><span style="color: #ffffff;">Количество статей на странице: </span>{{ find.qs|length }}</h4>
-
     <hr>
     {% if find.qs %}
+<style type="text/css">
+   TABLE {
+    width: 300px; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+   }
+   TD, TH {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+   }
+   TH {
+    background: #b0e0e6; /* Цвет фона */
+   }
+  </style>
     <table>
         <tr>
             <td>Заголовок</td>
@@ -21,16 +33,20 @@
             <td>Дата публикации</td>
             <td>Текст статьи
             <td>Рейтинг статьи</td>
+            <td>Тип</td>
             <td>Категория</td>
+
         </tr>
         {% for x in find.qs %}
+
         <tr>
-            <td>{{ x.name_of_article_or_news|truncatewords:4|cenz }}</td>
-            <td>{{ x.name.author_name }}</td>
-            <td>{{ x.date_of_create|date:"d M Y" }}</td>
-            <td>{{ x.text_of_article_or_news|truncatechars:20 }}</td>
-            <td>{{ x.rating_of_article_or_news }}</td>
-            <td>{{ x.category }}</td>
+            <td><h4>{{ x.name_of_article_or_news|truncatewords:4|cenz }}</h4></td>
+            <td><h4>{{ x.name.author_name }}</h4></td>
+            <td><h4>{{ x.date_of_create|date:"d M Y" }}</h4></td>
+            <td><h4>{{ x.text_of_article_or_news|truncatechars:20 }}<a href="/posts/{{x.id}}" style="font-size:20px">читать полностью</a></h4></td>
+            <td><h4>{{ x.rating_of_article_or_news }}</h4></td>
+            <td><h4>{{ x.category }}</h4></td>
+            <td><h4>{% for category in x.postCategory.all %} {{ category }} {% endfor %}</h4></td>
         </tr>
         {% endfor %}
     {% else %}

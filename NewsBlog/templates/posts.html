@@ -14,7 +14,7 @@ Posts
 
     <button> <a href="/posts/logout">Выйти</a> </button>
     {% else %}
-    <button> <a href="/sign/signup"> Зарегистрироваться </a></button></li>
+    <button> <a href="/accounts/signup"> Зарегистрироваться! </a></button>
     <button> <a href="/posts/login"> Войти </a></button></li>
     {% endif %}
 <!--    <h1><span style="color: #ffffff;">Все посты</span></h1>-->
@@ -44,8 +44,9 @@ Posts
             <td>Заголовок</td>
             <td>Автор публикации</td>
             <td>Дата публикации</td>
-            <td>Текст статьи
+            <td>Текст статьи</td>
             <td>Рейтинг статьи</td>
+            <td>Тип</td>
             <td>Категория</td>
         </tr>
         {% for post in posts %}
@@ -56,6 +57,7 @@ Posts
             <td>{{ post.text_of_article_or_news|truncatechars:20 }}<a href="{{post.id}}" style="font-size:20px">читать полностью</a></td>
             <td>{{ post.rating_of_article_or_news }}</td>
             <td>{{ post.category }}</td>
+            <td>{% for category in post.postCategory.all %} {{ category }} {% endfor %}</td>
         </tr>
         {% endfor %}
 

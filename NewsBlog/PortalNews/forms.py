@@ -3,8 +3,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 
-from .models import Post, Author
+from .models import Post, Author, Category
 
 
 class PostForm(forms.ModelForm):
@@ -14,6 +15,7 @@ class PostForm(forms.ModelForm):
             "name",
             "name_of_article_or_news",
             "text_of_article_or_news",
+            "postCategory"
         ]
     def clean(self):
         cleaned_data = super().clean()
@@ -31,6 +33,15 @@ class AuthorForm(forms.ModelForm):
         fields = {
             "author_name"
         }
+
+
+class BasicSignupForm(SignupForm):
+
+    def save(self, request):
+        user = super(BasicSignupForm, self).save(request)
+        basic_group = Group.objects.get(name='common')
+        basic_group.user_set.add(user)
+        return user
 
 
 class BaseRegisterForm(UserCreationForm):
@@ -53,3 +64,9 @@ class BaseRegisterForm(UserCreationForm):
         main_group.user_set.add(user)
         Author.objects.create(author_name=user)
         return user
+
+class SubscribeForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = ['theme']
+

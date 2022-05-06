@@ -15,7 +15,10 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='account/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='account/logout.html'), name='logout'),
     path('signup/', BaseRegisterView.as_view(template_name='account/signup.html'), name='signup'),
-    path("accounts/", LoginView.as_view(template_name='account/login.html'), name='login'),
     path('upgrade/', upgrade_me, name='upgrade'),
     path('signin/', IndexView.as_view(template_name='account/signin.html'), name="signin"),
+    path('category/', CategoryList.as_view(), name='category'),
+    path('subscribe/<int:pk>', add_sub, name='subscribe'),
+
+
 ]

@@ -24,10 +24,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'PortalNews',
+    'PortalNews.apps.PortalnewsConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',
+    'django_apscheduler',
     # вносим приложение allauth
     'allauth',
     'allauth.account',
@@ -35,7 +36,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+
+
 SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,8 +78,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 WSGI_APPLICATION = 'NewsBlog.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -132,8 +134,21 @@ LOGIN_REDIRECT_URL = '/posts/signin'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # Чтобы allauth распознал нашу форму, необходимо добавить строчку
-ACCOUNT_FORMS = {'signup': 'sign.forms.BaseRegisterForm'}
+ACCOUNT_FORMS = {'signup': 'PortalNews.forms.BasicSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера почты
+EMAIL_PORT = 465  # порт smtp сервера/ везде одинаковый
+EMAIL_HOST_USER = 'hayabusaigor@yandex.ru'  # имя пользователя, это всё то что идёт до собачки @ (для яндекс-аккаунта)
+EMAIL_HOST_PASSWORD = 'Bujhmnbnfhtyrj15'  # пароль от почты
+EMAIL_USE_SSL = True  # защита от перехвата
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# формат даты, которую будет воспринимать наш задачник (вспоминаем модуль по фильтрам)
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+
+# если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds

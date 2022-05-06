@@ -7,8 +7,6 @@ from django.urls import reverse
 from django import forms
 
 
-
-
 class Author(models.Model):
     author_name = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.SmallIntegerField(default=0)
@@ -26,12 +24,22 @@ class Author(models.Model):
         self.save()
     def __str__(self):
         return f"{self.author_name}"
-
+    class Meta():
+        verbose_name = "Автор"
+        verbose_name_plural = "Авторы"
 
 # Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
 # Имеет единственное поле: название категории. Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True).
 class Category(models.Model):
     theme = models.CharField(max_length=100, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, related_name='subscribers')
+
+    def __str__(self):
+        return f"{self.theme}"
+    class Meta():
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
 
 
 # Эта модель должна содержать в себе статьи и новости, которые создают пользователи. Каждый объект может иметь одну или несколько категорий.
@@ -51,12 +59,13 @@ class Post(models.Model):
         (ARTICLE, "Статья"),
         (NEWS, "Новость")
     )
-    category = models.CharField(max_length=2, choices=CATEGORY, default=NEWS, verbose_name="Категория")
+    category = models.CharField(max_length=2, choices=CATEGORY, default=NEWS, verbose_name="Тип")
     date_of_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     name_of_article_or_news = models.CharField(max_length=128, verbose_name="Заголовок")
     text_of_article_or_news = models.TextField(verbose_name="Текст")
     rating_of_article_or_news = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
-    postCategory = models.ManyToManyField(Category, through="PostCategory")
+    postCategory = models.ManyToManyField(Category, through="PostCategory", verbose_name="Категория" )
+
 
     def __str__(self):
         return f"{self.name_of_article_or_news}"
@@ -86,6 +95,11 @@ class PostCategory(models.Model):
     interPost = models.ForeignKey(Post, on_delete=models.CASCADE)
     interCategory = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.interCategory}, Пост: {self.interPost}"
+    class Meta():
+        verbose_name = "Промежуточная категория"
+        verbose_name_plural = "Промежуточные категории"
 
 # Под каждой новостью/статьёй можно оставлять комментарии, поэтому необходимо организовать их способ хранения тоже.
 # Модель будет иметь следующие поля:

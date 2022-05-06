@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .forms import PostForm, BaseRegisterForm
-from .models import Post
+from .models import Post, Category
 from .filters import PostFilter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
@@ -22,6 +22,7 @@ class PostList(ListView):
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
+
     paginate_by = 5
 
     def get_queryset(self):
@@ -171,3 +172,42 @@ class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
     success_url = '/posts/login'
+
+class CategoryList(ListView):
+    model = Category
+    ordering = 'theme'
+    template_name = 'category.html'
+    context_object_name = 'category'
+# оформление подписки или отписки
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     subs = Category.objects.values("subscribers")
+    #     context['sub'] = subs.filter(subscribers=self.request.user).exists()
+    #     context["not_sub"] = not subs.filter(subscribers=self.request.user).exists()
+    #     return context
+
+
+class Subscribe(UpdateView):
+    template_name = 'subscribe.html'
+    queryset = Category.objects.all()
+    success_url = '/posts/'
+
+
+@login_required
+def add_sub(request, pk):
+    user = request.user
+    user.save()
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+    return redirect('/posts/')
+
+
+
+
+
+
+
+
+
+
+
