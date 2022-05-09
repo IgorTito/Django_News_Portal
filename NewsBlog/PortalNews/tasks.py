@@ -53,6 +53,6 @@ def every_week():
                                 f"Ссылка на посты: http://127.0.0.1:8000/posts/search/?name_of_article_or_news__icontains=&category=&rating_of_article_or_news__gt=&postCategory={category['pk']}&date_of_create={today-delta} \n"
                                 f"отсортируйте по необходимым тегам \n"
                                 f"{today-delta}",
-                        from_email='',
+                        from_email='hayabusaigor@yandex.ru',
                         recipient_list=[user['email']],
                     )
