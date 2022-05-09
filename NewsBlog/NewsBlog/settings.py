@@ -1,6 +1,11 @@
-import os
+from dotenv import load_dotenv
 from pathlib import Path
+import os
 
+
+load_dotenv()
+env_path = Path('.')/'.env'
+load_dotenv(dotenv_path=env_path)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2+(sv9#u3+90s0)q$h#5%5#5rd(h^wha1ivqe%%jv731c)lbgu'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -142,8 +147,8 @@ ACCOUNT_FORMS = {'signup': 'PortalNews.forms.BasicSignupForm'}
 
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера почты
 EMAIL_PORT = 465  # порт smtp сервера/ везде одинаковый
-EMAIL_HOST_USER = ''  # имя пользователя, это всё то что идёт до собачки @ (для яндекс-аккаунта)
-EMAIL_HOST_PASSWORD = ''  # пароль от почты
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # имя пользователя, это всё то что идёт до собачки @ (для яндекс-аккаунта)
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # пароль от почты
 EMAIL_USE_SSL = True  # защита от перехвата
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -152,3 +157,8 @@ APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 # если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

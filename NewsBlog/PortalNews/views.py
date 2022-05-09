@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -9,7 +9,7 @@ from .forms import PostForm, BaseRegisterForm
 from .models import Post, Category
 from .filters import PostFilter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+from .tasks import *
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -69,6 +69,8 @@ class CreateNews(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):  # разделяем новости и статьи
         post = form.save(commit=True)
         post.category = "NE"
+        # создать движок задачи
+        every_create_post.delay(post.pk)
         return super().form_valid(form)
 
 
@@ -86,6 +88,8 @@ class CreateArticles(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=True)
         post.category = "AR"
+        # создать движок задачи
+        every_create_post.delay(post.pk)
         return super().form_valid(form)
 
 
