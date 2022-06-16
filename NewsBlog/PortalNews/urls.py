@@ -1,11 +1,12 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from .views import *
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-    path('', PostList.as_view(), name="posts_list"),
+    path('', cache_page(60)(PostList.as_view()), name="posts_list"),
     path('<int:pk>', OnePost.as_view(), name="one_post"),
-    path('news/create/', CreateNews.as_view(), name="news_create_post"),
+    path('news/create/', CreateNews.as_view(), name="news_create_post"),# добавим кэширование на детали товара. Раз в 10 минут товар будет записываться в кэш для экономии ресурсов.
     path('search/', SearchPost.as_view(), name="search_post"),
     path('news/<int:pk>/update/', NewsUpdatePost.as_view(), name="news_update_post"),
     path('news/<int:pk>/delete/', NewsDeletePost.as_view(), name="news_delete_post"),
@@ -22,3 +23,5 @@ urlpatterns = [
 
 
 ]
+
+

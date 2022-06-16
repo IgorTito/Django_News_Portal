@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+
 ]
 
 ROOT_URLCONF = 'NewsBlog.urls'
@@ -90,7 +91,16 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Kip369*',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -162,3 +172,147 @@ CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+
+    }
+}
+
+# логирование
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        'django': {
+            'handlers': ['general_news', 'console', 'WARNING_CONSOLE', 'ERROR_CONSOLE', 'CRITICAL_CONSOLE'],
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'errors_news'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'errors_news'],
+            'level': 'ERROR',
+        },
+        'django.template': {
+            'handlers': ['errors_news'],
+            'level': 'ERROR',
+        },
+        'django.db_backends': {
+            'handlers': ['mail_admins', 'errors_news'],
+            'level': 'ERROR',
+        },
+        'django.security': {
+            'handlers': ['security_news'],
+            'level': 'ERROR',
+        }
+    },
+    'handlers': {
+        'general_news': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'GENERALform',
+            'filters': ['require_debug_false'],
+        },
+        'errors_news': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'ERRORSform',
+        },
+        'security_news': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'SECURITYform',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'myformatter'
+
+        },
+        'WARNING_CONSOLE': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'WARNINGform'
+        },
+        'ERROR_CONSOLE': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'ERRORform'
+        },
+        'CRITICAL_CONSOLE': {
+            'level': 'CRITICAL',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'CRITICALform',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'MAILform',
+            'filters': ['require_debug_false'],
+        }
+    },
+    'formatters': {
+        'myformatter': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'WARNINGform': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'ERRORform': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'CRITICALform': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'GENERALform': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'ERRORSform': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'SECURITYform': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        },
+        'MAILform': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%Y.%m.%d  %H:%M:%S',
+            'style': '{',
+        }
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+}

@@ -16,7 +16,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Новостной портал</a>
+            <a class="navbar-brand" href="{% url 'posts_list' %}">Новостной портал</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false"
@@ -54,8 +54,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
-
-                        <h1><span style="color: #ffffff;">{% block content %}
+                        <h1><span style="color: #ffffff;">
+                            {% block content %}
                             {% endblock content %}
                         </span></h1>
 

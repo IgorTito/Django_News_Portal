@@ -10,8 +10,15 @@ from .models import Post, Category
 from .filters import PostFilter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .tasks import *
+from django.core.cache import cache
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class PostList(ListView):
+    # создаем логер
+    logger.info('INFO')
     # Указываем модель, объекты которой мы будем выводить
     model = Post
     # Поле, которое будет использоваться для сортировки объектов
@@ -53,6 +60,17 @@ class OnePost(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+    queryset = Post.objects.all()
+    #кэширование, детали поста кэшируются до тех пор, пока они не изменятся.
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'post-{self.kwargs["pk"]}',
+                        None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 # создание новости # Permission для ограничения прав доступа
@@ -169,7 +187,7 @@ def upgrade_me(request):
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
-    return redirect('/posts/signin')
+    return redirect('/posts/signin') # узнать про хардкодинг! если изменится путь!!
 
 
 class BaseRegisterView(CreateView):

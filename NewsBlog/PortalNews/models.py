@@ -5,7 +5,7 @@ from django.db.models import Sum
 from django.core.validators import MinValueValidator
 from django.urls import reverse
 from django import forms
-
+from django.core.cache import cache
 
 class Author(models.Model):
     author_name = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -71,6 +71,9 @@ class Post(models.Model):
         return f"{self.name_of_article_or_news}"
     def get_absolute_url(self):
         return reverse('one_post', args=[str(self.id)])
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)    # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'post-{self.pk}')  # затем удаляем его из кэша, чтобы сбросить его
     class Meta():
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
@@ -85,6 +88,8 @@ class Post(models.Model):
 
     def preview(self):
         return f"{(self.text_of_article_or_news)[0:20]}{'...'}"
+
+
 
 
 

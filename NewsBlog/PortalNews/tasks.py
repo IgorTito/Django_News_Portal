@@ -29,10 +29,10 @@ def every_create_post(instance):
 
 @shared_task
 def every_week():
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     delta = datetime.timedelta(seconds=10)
     today = datetime.date.today()
     notify = Post.objects.filter(date_of_create__gt=today-delta).values("postCategory", "name_of_article_or_news", "pk")
-    print(notify)
 
     for category in Category.objects.values("theme", "pk"):
 
