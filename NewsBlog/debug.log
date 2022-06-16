@@ -1,0 +1,15 @@
+INFO Watching for file changes with StatReloader
+INFO "GET / HTTP/1.1" 200 6056
+INFO "GET /posts/category/ HTTP/1.1" 200 3812
+INFO "GET /posts/category/ HTTP/1.1" 200 3812
+INFO "GET /posts/search/ HTTP/1.1" 200 19640
+INFO D:\Python\Django_News_Portal\NewsBlog\NewsBlog\settings.py changed, reloading.
+2022-06-14 21:00:31,786 INFO Watching for file changes with StatReloader
+2022-06-14 21:00:33,225 INFO "GET / HTTP/1.1" 200 6056
+2022-06-14 21:03:08,911 INFO D:\Python\Django_News_Portal\NewsBlog\NewsBlog\settings.py changed, reloading.
+2022-06-14 21:03:10,063 INFO Watching for file changes with StatReloader
+2022-06-14 21:03:32,826 INFO D:\Python\Django_News_Portal\NewsBlog\NewsBlog\settings.py changed, reloading.
+2022-06-14 21:03:33,588 INFO Watching for file changes with StatReloader
+2022-06-14 21:04:09,713 INFO D:\Python\Django_News_Portal\NewsBlog\NewsBlog\settings.py changed, reloading.
+2022-06-14 21:04:10,497 INFO Watching for file changes with StatReloader
+2022-06-14 21:06:27,177 INFO D:\Python\Django_News_Portal\NewsBlog\NewsBlog\settings.py changed, reloading.

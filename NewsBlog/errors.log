@@ -1,0 +1,26 @@
+2022-06-15 19:02:01,919 ERROR Internal Server Error: / D:\Python\Django_News_Portal\venv\lib\site-packages\django\utils\log.py (<class 'django.core.exceptions.FieldError'>, FieldError("Cannot resolve keyword 'date_of_create98' into field. Choices are: category, comment, date_of_create, id, name, name_id, name_of_article_or_news, postCategory, postcategory, rating_of_article_or_news, text_of_article_or_news"), <traceback object at 0x0000004F1E064280>)
+Traceback (most recent call last):
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\views\generic\base.py", line 84, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\views\generic\base.py", line 119, in dispatch
+    return handler(request, *args, **kwargs)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\views\generic\list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "D:\Python\Django_News_Portal\NewsBlog\PortalNews\views.py", line 36, in get_queryset
+    queryset = super().get_queryset()
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\views\generic\list.py", line 45, in get_queryset
+    queryset = queryset.order_by(*ordering)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\db\models\query.py", line 1295, in order_by
+    obj.query.add_ordering(*field_names)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\db\models\sql\query.py", line 2115, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "D:\Python\Django_News_Portal\venv\lib\site-packages\django\db\models\sql\query.py", line 1640, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'date_of_create98' into field. Choices are: category, comment, date_of_create, id, name, name_id, name_of_article_or_news, postCategory, postcategory, rating_of_article_or_news, text_of_article_or_news
+2022-06-15 19:02:01,924 ERROR "GET / HTTP/1.1" 500 114102 D:\Python\Django_News_Portal\venv\lib\site-packages\django\core\servers\basehttp.py None
